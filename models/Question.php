@@ -10,9 +10,6 @@ use Yii;
  * @property integer $id
  * @property string $text
  * @property double $answer
- * @property integer $answersCount
- * @property integer $ninetyCount
- * @property integer $fiftyCount
  * @property integer $dateSubmitted
  * @property integer $dateApproved
  *
@@ -37,7 +34,7 @@ class Question extends \yii\db\ActiveRecord
         return [
             [['text', 'answer', 'dateSubmitted'], 'required'],
             [['text'], 'string'],
-            [['answersCount', 'ninetyCount', 'fiftyCount', 'dateSubmitted', 'dateApproved'], 'integer', 'min' => 0],
+            [['dateSubmitted', 'dateApproved'], 'integer', 'min' => 0],
             [['answer'], 'number'],
         ];
     }
@@ -51,9 +48,6 @@ class Question extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'text' => Yii::t('app', 'Text'),
             'answer' => Yii::t('app', 'Answer'),
-            'answersCount' => Yii::t('app', 'Answers Count'),
-            'ninetyCount' => Yii::t('app', 'Ninety Count'),
-            'fiftyCount' => Yii::t('app', 'Fifty Count'),
             'dateSubmitted' => Yii::t('app', 'Date Submitted'),
             'dateApproved' => Yii::t('app', 'Date Approved'),
         ];
@@ -85,6 +79,20 @@ class Question extends \yii\db\ActiveRecord
         return static::updateAll([
             'dateApproved' => time(),
         ], $where);
+    }
+    
+    /**
+     * 
+     * @param boolean $save
+     * @return boolean
+     */
+    public function approve($save = true)
+    {
+        $this->dateApproved = time();
+        if ($save) {
+            return $this->save();
+        }
+        return true;
     }
 
 

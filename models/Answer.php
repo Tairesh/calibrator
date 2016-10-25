@@ -102,6 +102,21 @@ class Answer extends \yii\db\ActiveRecord
         return parent::beforeSave($insert);
     }
     
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            $this->user->score += $this->score;
+            $this->user->answersCount++;
+            if ($this->isCorrect == 1) {
+                $this->user->ninetyCount++;
+            } elseif ($this->isCorrect == 2) {
+                $this->user->fiftyCount++;
+            }
+            $this->user->save();
+        }
+        return parent::afterSave($insert, $changedAttributes);
+    }
+    
     public function ninetyEndValidator($attribute)
     {        
         if ($this->ninetyEnd <= $this->ninetyStart) {

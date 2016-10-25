@@ -13,6 +13,8 @@ use yii\web\IdentityInterface;
  * @property string $name
  * @property double $score
  * @property integer $answersCount
+ * @property integer $ninetyCount
+ * @property integer $fiftyCount
  *
  * @property Account[] $accounts
  * @property Answer[] $answers
@@ -36,7 +38,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['name'], 'required'],
             [['score'], 'number'],
-            [['answersCount'], 'integer', 'min' => 0],
+            [['answersCount', 'ninetyCount', 'fiftyCount'], 'integer', 'min' => 0],
             [['name'], 'string', 'max' => 255],
         ];
     }
@@ -51,6 +53,8 @@ class User extends ActiveRecord implements IdentityInterface
             'name' => Yii::t('app', 'Name'),
             'score' => Yii::t('app', 'Score'),
             'answersCount' => Yii::t('app', 'Answers Count'),
+            'ninetyCount' => Yii::t('app', 'Ninety Count'),
+            'fiftyCount' => Yii::t('app', 'Fifty Count'),
         ];
     }
 

@@ -11,14 +11,7 @@ $this->title = Yii::t('app', 'Brain Calibrator');
 
 ?>
 <div class="site-index">
-
-    <div class="jumbotron">
-        <?php if (Yii::$app->user->isGuest): ?>
-        <p>
-            <?=Html::a(Yii::t('app','Login with VK'), ['site/auth', 'authclient' => 'vkontakte'], ['class' => 'btn btn-lg btn-primary'])?>
-        </p>
-        <?php else: ?>
-        
+    <div class="jumbotron">        
         <h1><?=$question->text?></h1>
         <div class="row" style="margin-top: 3em">     
             <?php $form = ActiveForm::begin([
@@ -58,11 +51,10 @@ $this->title = Yii::t('app', 'Brain Calibrator');
                 <div class="input-group">
                     <?=$form->field($answer, 'questionId')->hiddenInput()?>
                     <?= Html::submitButton(Yii::t('app', 'Send answer'), ['class' => 'btn btn-lg btn-primary', 'name' => 'submit-button']) ?>
+                    <?= Html::a(Yii::t('app', 'Skip question'), ['site/index'], ['class' => 'btn btn-lg btn-default'])?>
                 </div>
             </div>
             <?php ActiveForm::end(); ?>
         </div>
-        <?php endif ?>
     </div>
 </div>
-<?php var_dump(\app\models\Answer::find()->all()) ?>

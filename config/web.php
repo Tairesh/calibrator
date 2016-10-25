@@ -1,15 +1,17 @@
 <?php
 
 $params = require(__DIR__ . '/params.php');
+$authClients = require(__DIR__ . '/auth-clients.php');
 
 $config = [
-    'id' => 'basic',
+    'id' => 'calibrator',
     'basePath' => dirname(__DIR__),
+    'language' => 'en-US',
+    'sourceLanguage' => 'en-US',
     'bootstrap' => ['log'],
     'components' => [
         'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'AdtBe1PCXHH2ia5w9Q6OljFYdazf5Nro',
+            'cookieValidationKey' => $params['cookieValidationKey'],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -17,6 +19,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+            'loginUrl'=> '/',
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -38,14 +41,28 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+        'authClientCollection' => [
+            'class' => 'yii\authclient\Collection',
+            'clients' => $authClients,
+        ],
+        'i18n' => [
+            'translations' => [
+                'app*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/messages',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'app' => 'app.php',
+                    ],
+                ],
+            ],
+        ],
     ],
     'params' => $params,
 ];

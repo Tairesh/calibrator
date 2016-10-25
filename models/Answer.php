@@ -23,6 +23,13 @@ use Yii;
  */
 class Answer extends \yii\db\ActiveRecord
 {
+    
+    const SCORE_BASE = 100;
+    
+    const FIFTY_MODIFIER = 2;
+    const NINETY_MODIFIER = 10;
+
+
     /**
      * @inheritdoc
      */
@@ -88,6 +95,9 @@ class Answer extends \yii\db\ActiveRecord
     {
         if ($insert) {
             $this->dateSubmitted = time();
+                       
+            $this->calcIsCorrect();
+            $this->calcScore();
         }
         return parent::beforeSave($insert);
     }
@@ -121,6 +131,43 @@ class Answer extends \yii\db\ActiveRecord
             return false;
         }
         return true;
+    }
+    
+    private function calcIsCorrect()
+    {        
+        $rightAnswer = $this->question->answer;
+        if ($rightAnswer >= $this->ninetyStart && $rightAnswer <= $this->ninetyEnd) {
+            $this->isCorrect = 1;
+        }
+        if ($rightAnswer >= $this->fiftyStart && $rightAnswer <= $this->fiftyEnd) {
+            $this->isCorrect = 2;
+        }
+    }
+    
+    private function calcScore()
+    {        
+        if (!$this->isCorrect) {
+            $this->score = 0;
+            return;
+        }
+        $rightAnswer = $this->question->answer;
+        $fiftyDiapason = $this->fiftyEnd - $this->fiftyStart;
+        $ninetyDiapason = $this->ninetyEnd - $this->ninetyStart;
+        
+        $score = static::SCORE_BASE;
+        
+        if ($this->isCorrect < 2) {
+            $score /= 2;
+            if ($ninetyDiapason > $rightAnswer*static::NINETY_MODIFIER) {
+                $score /= $ninetyDiapason/($rightAnswer*static::NINETY_MODIFIER);
+            }
+        } else {
+            if ($fiftyDiapason> $rightAnswer*static::FIFTY_MODIFIER) {
+                $score /= $fiftyDiapason/($rightAnswer*static::FIFTY_MODIFIER);
+            }
+        }
+        
+        $this->score = $score;
     }
     
 }

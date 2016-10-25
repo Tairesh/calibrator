@@ -65,3 +65,4 @@ $this->title = Yii::t('app', 'Brain Calibrator');
         <?php endif ?>
     </div>
 </div>
+<?php var_dump(\app\models\Answer::find()->all()) ?>

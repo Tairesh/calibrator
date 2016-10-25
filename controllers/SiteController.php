@@ -38,6 +38,10 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $question = Question::findRandom(Yii::$app->user->identity);
+        if (is_null($question)) {
+            throw new \yii\web\NotFoundHttpException(Yii::t('app', 'No more questions'));
+        }
+        
         $answer = new Answer([
             'questionId' => $question->id,
             'userId' => Yii::$app->user->id,
@@ -51,7 +55,7 @@ class SiteController extends Controller
         }
         
         if ($answer->load(Yii::$app->request->post()) && $answer->save()) {
-            return $this->goHome();
+            return $this->redirect(['answer/view', ['id' => $answer->id]]);
         }
         
         return $this->render('index', [

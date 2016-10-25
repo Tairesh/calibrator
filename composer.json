@@ -1,0 +1,26 @@
+{
+    "name": "lazzyteam/calibrator",
+    "description": "Brain Calibrator",
+    "homepage": "http://calibrator.lazzyteam.pw/",
+    "type": "project",
+    "license": "WTFPL",
+    "support": {
+        "issues": "https://github.com/tairesh/calibrator/issues?state=open",
+        "source": "https://github.com/tairesh/calibrator"
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.5.9",
+        "yiisoft/yii2": "~2.0.5",
+        "yiisoft/yii2-bootstrap": "~2.0.0",
+        "yiisoft/yii2-swiftmailer": "~2.0.0"
+    },
+    "require-dev": {
+        "yiisoft/yii2-debug": "~2.0.0",
+        "yiisoft/yii2-gii": "~2.0.0",
+        "yiisoft/yii2-faker": "~2.0.0"
+    },
+    "config": {
+        "process-timeout": 1800
+    }
+}

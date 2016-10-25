@@ -37,12 +37,15 @@ class Answer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['userId', 'questionId', 'fiftyStart', 'fiftyEnd', 'ninetyStart', 'ninetyEnd', 'isCorrect', 'score', 'dateSubmitted'], 'required'],
+            [['userId', 'questionId', 'fiftyStart', 'fiftyEnd', 'ninetyStart', 'ninetyEnd', 'isCorrect', 'score'], 'required'],
             [['userId', 'questionId', 'isCorrect', 'dateSubmitted'], 'integer', 'min' => 0],
             [['fiftyStart', 'fiftyEnd', 'ninetyStart', 'ninetyEnd', 'score'], 'number'],
             [['userId', 'questionId'], 'unique', 'targetAttribute' => ['userId', 'questionId'], 'message' => 'The combination of User ID and Question ID has already been taken.'],
             [['questionId'], 'exist', 'skipOnError' => true, 'targetClass' => Question::className(), 'targetAttribute' => ['questionId' => 'id']],
             [['userId'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['userId' => 'id']],
+            [['fiftyStart'], 'fiftyStartValidator'],
+            [['fiftyEnd'], 'fiftyEndValidator'],
+            [['ninetyEnd'], 'ninetyEndValidator'],
         ];
     }
 
@@ -80,4 +83,44 @@ class Answer extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'userId']);
     }
+    
+    public function beforeSave($insert)
+    {
+        if ($insert) {
+            $this->dateSubmitted = time();
+        }
+        return parent::beforeSave($insert);
+    }
+    
+    public function ninetyEndValidator($attribute)
+    {        
+        if ($this->ninetyEnd <= $this->ninetyStart) {
+            $this->addError($attribute, Yii::t('app', 'End must be more than start'));
+            return false;
+        }
+        return true;
+    }
+    
+    public function fiftyStartValidator($attribute)
+    {
+        if ($this->fiftyStart < $this->ninetyStart || $this->fiftyStart > $this->ninetyEnd) {
+            $this->addError($attribute, Yii::t('app', '50% intevral must be inside 90%'));
+            return false;
+        }
+        return true;
+    }
+    
+    public function fiftyEndValidator($attribute)
+    {
+        if ($this->fiftyEnd > $this->ninetyEnd || $this->fiftyEnd < $this->ninetyStart) {
+            $this->addError($attribute, Yii::t('app', '50% intevral must be inside 90%'));
+            return false;
+        }
+        if ($this->fiftyEnd <= $this->fiftyStart) {
+            $this->addError($attribute, Yii::t('app', 'End must be more than start'));
+            return false;
+        }
+        return true;
+    }
+    
 }

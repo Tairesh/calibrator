@@ -5,7 +5,11 @@ namespace app\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\authclient\AuthAction;
+use yii\bootstrap\ActiveForm;
+use yii\web\Response;
 use app\models\Account;
+use app\models\Question;
+use app\models\Answer;
 
 class SiteController extends Controller
 {
@@ -33,7 +37,27 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $question = Question::findRandom(Yii::$app->user->identity);
+        $answer = new Answer([
+            'questionId' => $question->id,
+            'userId' => Yii::$app->user->id,
+            'score' => 0,
+            'isCorrect' => 0,
+        ]);
+         
+        if (Yii::$app->request->isAjax && $answer->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($answer);
+        }
+        
+        if ($answer->load(Yii::$app->request->post()) && $answer->save()) {
+            return $this->goHome();
+        }
+        
+        return $this->render('index', [
+            'question' => $question,
+            'answer' => $answer,
+        ]);
     }
     
     public function onAuthSuccess($client)

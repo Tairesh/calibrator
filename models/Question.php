@@ -74,4 +74,31 @@ class Question extends \yii\db\ActiveRecord
     {
         return $this->hasMany(User::className(), ['id' => 'userId'])->viaTable('answers', ['questionId' => 'id']);
     }
+    
+    /**
+     * 
+     * @param string|array $where
+     * @return integer
+     */
+    public static function approveAll($where = '')
+    {
+        return static::updateAll([
+            'dateApproved' => time(),
+        ], $where);
+    }
+
+
+    /**
+     * 
+     * @param \app\models\User $user
+     * @return static
+     */
+    public static function findRandom(User $user)
+    {
+        return static::findBySql('SELECT q.* FROM '.static::tableName().' q 
+            LEFT JOIN '.Answer::tableName().' a ON a.questionId = q.id AND a.userId = '.$user->id.' 
+            WHERE a.id IS NULL AND q.dateApproved IS NOT NULL
+            ORDER BY RANDOM()
+            ')->one();
+    }
 }

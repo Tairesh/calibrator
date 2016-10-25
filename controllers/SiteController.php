@@ -3,39 +3,12 @@
 namespace app\controllers;
 
 use Yii;
-use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
+use yii\authclient\AuthAction;
+use app\models\Account;
 
 class SiteController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * @inheritdoc
@@ -45,10 +18,10 @@ class SiteController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],            
+            'auth' => [
+                'class' => AuthAction::className(),
+                'successCallback' => [$this, 'onAuthSuccess'],
             ],
         ];
     }
@@ -62,26 +35,38 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
-
-    /**
-     * Login action.
-     *
-     * @return string
-     */
-    public function actionLogin()
+    
+    public function onAuthSuccess($client)
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
+        $attributes = $client->getUserAttributes();
+        $accountParams = [
+            'sourceType' => Account::getSourceType($client->getId()),
+            'sourceId' => Account::getSourceId($attributes),
+        ];
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        /** @var Account $account */
+        $account = Account::find()->where($accountParams)->one();
+        
+        if (Yii::$app->user->isGuest) {
+            if ($account && $account->user) { // login                
+                Yii::$app->user->login($account->user, 30*24*60*60);
+            } else { // signup
+                $res = Account::signUp(Account::getSourceType($client->getId()), $attributes);
+                if ($res && count($res->getErrors())) {
+                    return $this->render('error', ['message' => print_r($res->getErrors(), true), 'name' => Yii::t('app', 'Registration error')]);
+                }
+            }
+        } else { // user already logged in
+            if (!$account) { // add auth provider
+                $account = new Account($accountParams);
+                $account->userId = Yii::$app->user->id;
+                $account->save();
+            }
         }
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+        
+        return $this->goHome();
     }
+
 
     /**
      * Logout action.
@@ -95,31 +80,4 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    /**
-     * Displays contact page.
-     *
-     * @return string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
 }

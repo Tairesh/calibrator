@@ -4,7 +4,7 @@
 
 use yii\helpers\Html;
 
-$this->title = Yii::t('app', 'Login') . ' ' . Yii::t('app', 'Brain Calibrator');
+$this->title = Yii::t('app', 'Login').' '.Yii::t('app', 'Brain Calibrator');
 
 ?>
 <div class="site-index">

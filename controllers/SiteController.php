@@ -44,7 +44,7 @@ class SiteController extends Controller
         
         $question = Question::findRandom(Yii::$app->user->identity);
         if (is_null($question)) {
-            return $this->render('win');
+            throw new \yii\web\NotFoundHttpException(Yii::t('app', 'No more questions'));
         }
         
         $answer = new Answer([
@@ -67,6 +67,15 @@ class SiteController extends Controller
             'question' => $question,
             'answer' => $answer,
         ]);
+    }
+    
+    public function actionLogin()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+        
+        return $this->render('login');
     }
     
     public function onAuthSuccess($client)
@@ -111,14 +120,6 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
-    }
-    
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-        return $this->render('login');
     }
 
 }

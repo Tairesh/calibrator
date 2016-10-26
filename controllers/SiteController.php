@@ -37,6 +37,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+        
         $question = Question::findRandom(Yii::$app->user->identity);
         if (is_null($question)) {
             throw new \yii\web\NotFoundHttpException(Yii::t('app', 'No more questions'));
@@ -55,13 +60,22 @@ class SiteController extends Controller
         }
         
         if ($answer->load(Yii::$app->request->post()) && $answer->save()) {
-            return $this->redirect(['answer/view', ['id' => $answer->id]]);
+            return $this->redirect(['answer/view', 'id' => $answer->id]);
         }
         
         return $this->render('index', [
             'question' => $question,
             'answer' => $answer,
         ]);
+    }
+    
+    public function actionLogin()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+        
+        return $this->render('login');
     }
     
     public function onAuthSuccess($client)

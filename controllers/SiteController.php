@@ -60,7 +60,7 @@ class SiteController extends Controller
         }
         
         if ($answer->load(Yii::$app->request->post()) && $answer->save()) {
-            return $this->redirect(['answer/view', ['id' => $answer->id]]);
+            return $this->redirect(['answer/view', 'id' => $answer->id]);
         }
         
         return $this->render('index', [

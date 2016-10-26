@@ -108,9 +108,10 @@ class Answer extends ActiveRecord
         if ($insert) {
             $this->user->score += $this->score;
             $this->user->answersCount++;
-            if ($this->isCorrect == 1) {
+            if ($this->isCorrect >= 1) {
                 $this->user->ninetyCount++;
-            } elseif ($this->isCorrect == 2) {
+            }
+            if ($this->isCorrect == 2) {
                 $this->user->fiftyCount++;
             }
             $this->user->save();

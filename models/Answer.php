@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "answers".
@@ -21,7 +22,7 @@ use Yii;
  * @property Question $question
  * @property User $user
  */
-class Answer extends \yii\db\ActiveRecord
+class Answer extends ActiveRecord
 {
     
     const SCORE_BASE = 100;

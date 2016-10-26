@@ -35,8 +35,9 @@ AppAsset::register($this);
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
+        'items' => Yii::$app->user->isGuest ? [] : [            
             ['label' => Yii::t('app', 'Next question'), 'url' => ['/site/index']],
+            ['label' => Yii::$app->user->identity->name, 'url' => ['/user/view', 'id' => Yii::$app->user->id]],
         ],
     ]);
     NavBar::end();

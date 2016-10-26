@@ -6,7 +6,7 @@
         'vkontakte' => [
             'class' => 'yii\authclient\clients\VKontakte',
             'clientId' => '00000',
-            'clientSecret' => '...',
+            'clientSecret' => '_______',
             'attributeNames' => [
                 'sex',
                 'photo',

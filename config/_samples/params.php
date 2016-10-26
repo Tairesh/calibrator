@@ -1,11 +1,8 @@
 <?php
 
 return [
-    'adminEmail' => 'politsim@lazyteam.pw',
-    'AUTH_KEY_SECRET' => '...', // зерно для ключа самописной авторизации (вроде уже не используется) @TODO: удалить
-    'cookieValidationKey' => '...', // зерно для ключа авторизации Yii
-
-    // для отправки уведомлений в вкшечку @TODO: выпилить
-    'VK_APP_ID' => 00000, 
-    'VK_APP_KEY' => '...'
+    'adminEmail' => 'tairesh.rus@gmail.com',
+    'cookieValidationKey' => '_______', // зерно для ключа авторизации Yii
+    'vkAppId' => '000', // id приложения в вк для работы в iframe
+    'vkAppSecret' => '_______', // ключ приложения в вк для работы в iframe
 ];

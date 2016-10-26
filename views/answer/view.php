@@ -13,8 +13,8 @@ $this->title = $model->question->text.' '.Yii::t('app', 'Brain Calibrator');
         <h2><?=Html::encode($model->question->text) ?></h2>
         <h1><?=number_format($model->question->answer,0,'.',' ')?></h1>
         <h3><?=Yii::t('app', 'You answered')?>:</h3>
-        <p class="<?=$model->isCorrect?'text-success':''?>" ><strong><?=Yii::t('app', '90%')?>:</strong> From <?=$model->ninetyStart?> to <?=$model->ninetyEnd?></p>
-        <p class="<?=$model->isCorrect>1?'text-success':''?>" ><strong><?=Yii::t('app', '50%')?>:</strong> From <?=$model->fiftyStart?> to <?=$model->fiftyEnd?></p>
+        <p class="<?=$model->isCorrect?'text-success':''?>" ><strong><?=Yii::t('app', '90%')?>:</strong> From <?=number_format($model->ninetyStart,0,'.',' ')?> to <?=number_format($model->ninetyEnd,0,'.',' ')?></p>
+        <p class="<?=$model->isCorrect>1?'text-success':''?>" ><strong><?=Yii::t('app', '50%')?>:</strong> From <?=number_format($model->fiftyStart,0,'.',' ')?> to <?=number_format($model->fiftyEnd,0,'.',' ')?></p>
         <h2><?=Yii::t('app', 'Your score')?>: <label class="label label-success"><?=$model->score?></label></h2>
         <p class="help-block"><?=Yii::t('app', 'You are answered this question')?> <?=date('d-m-Y',$model->dateSubmitted)?></p>
         <p>

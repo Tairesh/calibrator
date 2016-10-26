@@ -6,6 +6,7 @@ use Yii;
 use app\models\Answer;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\HttpException;
 
 /**
  * AnswerController implements the CRUD actions for Answer model.
@@ -20,8 +21,14 @@ class AnswerController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        
+        if (Yii::$app->user->isGuest || Yii::$app->user->id != $model->userId) {
+            throw new HttpException(403, Yii::t('app', 'You have not access to view this page'));
+        }
+        
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 
@@ -37,7 +44,7 @@ class AnswerController extends Controller
         if (($model = Answer::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
 }

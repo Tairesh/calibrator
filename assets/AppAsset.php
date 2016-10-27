@@ -20,7 +20,9 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site.css',
     ];
-    public $js = [
+    public $js = [        
+        '//vk.com/js/api/xd_connection.js',
+        'js/script.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

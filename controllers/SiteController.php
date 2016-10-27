@@ -68,6 +68,7 @@ class SiteController extends Controller
         }
         
         if ($answer->load(Yii::$app->request->post()) && $answer->save()) {
+            Yii::$app->session->set('currentQuestionId', null);
             return $this->redirect(['answer/view', 'id' => $answer->id]);
         }
         

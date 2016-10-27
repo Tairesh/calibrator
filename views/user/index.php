@@ -21,11 +21,27 @@ $this->title = Yii::t('app', 'Users').' '.Yii::t('app', 'Brain Calibrator');
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'name',
+            [
+                'attribute' => 'name',
+                'value' => function ($row) {
+                    return Html::a($row['name'], ['user/view', 'id' => $row['id']]);
+                },
+                'format' => 'raw',
+            ],
             'score',
-            'answersCount',
-            'ninetyCount',
-            'fiftyCount',
+            'answersCount:integer',
+            [
+                'attribute' => 'ninetyCount',
+                'value' => function ($row) {
+                    return ($row['answersCount'] > 0 ? number_format(100*$row['ninetyCount']/$row['answersCount'],0) : 0).'%';
+                },
+            ],
+            [
+                'attribute' => 'fiftyCount',
+                'value' => function ($row) {
+                    return ($row['answersCount'] > 0 ? number_format(100*$row['fiftyCount']/$row['answersCount'],0) : 0).'%';
+                },
+            ],
         ],
     ]); ?>
     <?php Pjax::end(); ?>

@@ -18,9 +18,7 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'answersCount', 'ninetyCount', 'fiftyCount'], 'integer'],
             [['name'], 'safe'],
-            [['score'], 'number'],
         ];
     }
 
@@ -57,15 +55,6 @@ class UserSearch extends User
             // $query->where('0=1');
             return $dataProvider;
         }
-
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'score' => $this->score,
-            'answersCount' => $this->answersCount,
-            'ninetyCount' => $this->ninetyCount,
-            'fiftyCount' => $this->fiftyCount,
-        ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
 

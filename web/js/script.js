@@ -6,10 +6,8 @@ if (typeof VK !== 'undefined') {
 $(function () {
     if (typeof VK !== 'undefined') {
         setInterval(function () {
-            var newheight = $(document.body).height();
-            if (newheight < 600) newheight = 600;
-
-            VK.callMethod("resizeWindow", 1000, newheight);
+            var newheight = $('#main-container').height();
+            VK.callMethod("resizeWindow", 1000, newheight < 600 ? 600 : newheight);
         }, 500);
     }
 //    if (self.parent.frames.length === 0) { // мы не в приложении вк

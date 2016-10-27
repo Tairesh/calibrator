@@ -24,7 +24,7 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<div class="wrap">
+    <div id="main-container" class="wrap">
     <?php
     NavBar::begin([
         'brandLabel' => Yii::t('app', 'Brain Calibrator'),

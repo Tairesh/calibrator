@@ -45,20 +45,17 @@ AppAsset::register($this);
     ?>
 
     <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
         <?= $content ?>
     </div>
 </div>
 
-<footer class="footer">
+<!--<footer class="footer">
     <div class="container">
         <p class="pull-left">&copy; <?=Html::a('Lazzy Team', '//lazzyteam.pw')?> <?= date('Y') ?></p>
 
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
-</footer>
+</footer>-->
 
 <?php $this->endBody() ?>
 </body>

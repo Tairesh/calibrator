@@ -17,7 +17,7 @@ $this->title = $model->name.' '.Yii::t('app', 'Brain Calibrator');
             $ninetyPercents = 100*$model->ninetyCount/$model->answersCount;
             $fiftyPercents = 100*$model->fiftyCount/$model->answersCount;
         ?>
-        <p><?=Yii::t('app', 'Ninety Count')?>: <?=$model->ninetyCount?>/<?=$model->answersCount?> <span class="label <?=($ninetyPercents > 70 && $ninetyPercents < 95)?'label-success':'label-warning'?>">(<?=number_format($ninetyPercents, 0, '', ' ')?>)</span></p>
+        <p><?=Yii::t('app', 'Ninety Count')?>: <?=$model->ninetyCount?>/<?=(int)$model->answersCount?> <span class="label <?=($ninetyPercents > 70 && $ninetyPercents < 95)?'label-success':'label-warning'?>">(<?=number_format($ninetyPercents, 0, '', ' ')?>%)</span></p>
         <p class="help">
             <?php if ($ninetyPercents <= 70): ?>
             <span class="text-warning"><?=Yii::t('app', 'Ninety diapasons too small')?></span>
@@ -27,7 +27,7 @@ $this->title = $model->name.' '.Yii::t('app', 'Brain Calibrator');
             <span class="text-success"><?=Yii::t('app', 'Ninety diapasons looking good')?></span>
             <?php endif ?>
         </p>
-        <p><?=Yii::t('app', 'Fifty Count')?>: <?=$model->fiftyCount?>/<?=$model->answersCount?> <span class="label <?=($fiftyPercents > 30 && $fiftyPercents < 70)?'label-success':'label-warning'?>">(<?=number_format(100*$model->fiftyCount/$model->answersCount, 0, '', ' ')?>)</span></p>
+        <p><?=Yii::t('app', 'Fifty Count')?>: <?=$model->fiftyCount?>/<?=(int)$model->answersCount?> <span class="label <?=($fiftyPercents > 30 && $fiftyPercents < 70)?'label-success':'label-warning'?>">(<?=number_format(100*$model->fiftyCount/$model->answersCount, 0, '', ' ')?>%)</span></p>
         <p class="help">
             <?php if ($fiftyPercents <= 70): ?>
             <span class="text-warning"><?=Yii::t('app', 'Fifty diapasons too small')?></span>

@@ -51,7 +51,7 @@ $this->title = Yii::t('app', 'Brain Calibrator');
                 <div class="input-group">
                     <?=$form->field($answer, 'questionId')->hiddenInput()?>
                     <?= Html::submitButton(Yii::t('app', 'Send answer'), ['class' => 'btn btn-lg btn-primary', 'name' => 'submit-button']) ?>
-                    <?= Html::a(Yii::t('app', 'Skip question'), ['site/index'], ['class' => 'btn btn-lg btn-default']) ?>
+                    <?= Html::a(Yii::t('app', 'Skip question'), ['site/index', 'skip' => 1], ['class' => 'btn btn-lg btn-default']) ?>
                 </div>
             </div>
             <?php ActiveForm::end(); ?>

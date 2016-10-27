@@ -101,7 +101,7 @@ class Question extends \yii\db\ActiveRecord
      * @param \app\models\User $user
      * @return static
      */
-    public static function findRandom(User $user)
+    public static function findRandom(User $user, $currentQuestionId = null)
     {
         return static::findBySql('SELECT q.* FROM '.static::tableName().' q 
             LEFT JOIN '.Answer::tableName().' a ON a.questionId = q.id AND a.userId = '.$user->id.' 

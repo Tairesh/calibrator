@@ -36,16 +36,23 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex($skip = false)
     {
                 
         if (Yii::$app->user->isGuest) {
             return $this->redirect(['site/login']);
         }
         
-        $question = Question::findRandom(Yii::$app->user->identity);
-        if (is_null($question)) {
-            throw new \yii\web\NotFoundHttpException(Yii::t('app', 'No more questions'));
+        $currentQuestionId = Yii::$app->session->get('currentQuestionId');
+        if (!$currentQuestionId || $skip) {
+            $question = Question::findRandom(Yii::$app->user->identity);
+            if (is_null($question)) {
+                Yii::$app->session->set('currentQuestionId', null);
+                return $this->render('win');
+            }
+            Yii::$app->session->set('currentQuestionId', $question->id);
+        } else {
+            $question = Question::findOne($currentQuestionId);
         }
         
         $answer = new Answer([

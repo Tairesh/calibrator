@@ -38,7 +38,7 @@ AppAsset::register($this);
         'items' => Yii::$app->user->isGuest ? [] : [            
             ['label' => Yii::t('app', 'Answer a question'), 'url' => ['/site/index']],
             ['label' => Yii::$app->user->identity->name, 'url' => ['/user/view', 'id' => Yii::$app->user->id]],
-            ['label' => Yii::t('app', 'Users rating'), 'url' => ['/user/index', 'sort' => 'score']],
+            ['label' => Yii::t('app', 'Users rating'), 'url' => ['/user/index', 'sort' => '-score']],
         ],
     ]);
     NavBar::end();

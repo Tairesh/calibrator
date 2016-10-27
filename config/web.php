@@ -63,6 +63,11 @@ $config = [
                 ],
             ],
         ],
+        'vkapi' => [
+            'class' => 'app\components\VkApi',
+            'appId' => $params['vkapp']['id'],
+            'appKey' => $params['vkapp']['key'],
+        ],
     ],
     'params' => $params,
 ];

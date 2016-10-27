@@ -7,6 +7,7 @@ use yii\web\Controller;
 use yii\authclient\AuthAction;
 use yii\bootstrap\ActiveForm;
 use yii\web\Response;
+use yii\web\HttpException;
 use app\models\Account;
 use app\models\Question;
 use app\models\Answer;
@@ -37,7 +38,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        
+                
         if (Yii::$app->user->isGuest) {
             return $this->redirect(['site/login']);
         }
@@ -109,9 +110,38 @@ class SiteController extends Controller
         return $this->goHome();
     }
     
-    public function actionAuthVkApp($viewer_id, $auth_key)
+    public function actionVkAppAuth($viewer_id, $auth_key, $user_id)
     {
+        if (!Yii::$app->user->isGuest) {
+            Yii::$app->user->logout();
+        }
         
+//        $friends = json_decode(Yii::$app->request->get("api_result"))["response"];
+        Yii::$app->vkapi->checkAuthKey($viewer_id, $auth_key);        
+        
+        $vkinfo = Yii::$app->vkapi->api('users.get',['user_ids' => $viewer_id])->response[0];
+               
+        $account = Account::find()->where([
+            'sourceType' => Account::SOURCE_VKAPP,
+            'sourceId' => $viewer_id,
+        ])->one();
+                
+        if ($account) { // login
+            /** @var \app\models\User */
+            $user = $account->user;
+            $user->name = $vkinfo->first_name.' '.$vkinfo->last_name;
+            $user->save();
+            
+            Yii::$app->user->login($user, 30*24*60*60);
+            
+        } else { // signup
+            $res = Auth::signUp(Account::SOURCE_VKAPP, get_object_vars($vkinfo));
+            if ($res && count($res->getErrors())) {
+                return $this->render('error', ['message' => print_r($res->getErrors(), true), 'name' => Yii::t('app', 'Registration error')]);
+            }
+        }
+        
+        return $this->goHome();        
     }
 
     /**

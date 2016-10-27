@@ -20,7 +20,7 @@ class Account extends ActiveRecord
     
     const SOURCE_GOOGLE = 1;
     const SOURCE_VK = 2;
-    const SOURCE_VKAPP = 3;
+    const SOURCE_VKAPP = 2;
     const SOURCE_FACEBOOK = 4;
     const SOURCE_TWITTER = 5;
     

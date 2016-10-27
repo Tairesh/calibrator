@@ -29,9 +29,9 @@ $this->title = $model->name.' '.Yii::t('app', 'Brain Calibrator');
         </p>
         <p><?=Yii::t('app', 'Fifty Count')?>: <?=$model->fiftyCount?>/<?=(int)$model->answersCount?> <span class="label <?=($fiftyPercents > 30 && $fiftyPercents < 70)?'label-success':'label-warning'?>">(<?=number_format(100*$model->fiftyCount/$model->answersCount, 0, '', ' ')?>%)</span></p>
         <p class="help">
-            <?php if ($fiftyPercents <= 70): ?>
+            <?php if ($fiftyPercents <= 30): ?>
             <span class="text-warning"><?=Yii::t('app', 'Fifty diapasons too small')?></span>
-            <?php elseif ($fiftyPercents >= 95): ?>
+            <?php elseif ($fiftyPercents >= 70): ?>
             <span class="text-warning"><?=Yii::t('app', 'Fifty diapasons too big')?></span>
             <?php else: ?>
             <span class="text-success"><?=Yii::t('app', 'Fifty diapasons looking good')?></span>

@@ -22,6 +22,10 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'score') ?>
 
     <?= $form->field($model, 'answersCount') ?>
+    
+    <?= $form->field($model, 'ninetyCount') ?>
+    
+    <?= $form->field($model, 'fiftyCount') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

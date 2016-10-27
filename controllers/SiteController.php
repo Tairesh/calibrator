@@ -108,7 +108,7 @@ class SiteController extends Controller
         
         return $this->goHome();
     }
-
+    
     public function actionAuthVkApp($viewer_id, $auth_key)
     {
         

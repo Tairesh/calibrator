@@ -20,6 +20,8 @@ $this->title = $model->name.' '.Yii::t('app', 'Brain Calibrator');
             'name',
             'score',
             'answersCount',
+            'ninetyCount',
+            'fiftyCount',
         ],
     ]) ?>
 

@@ -11,6 +11,8 @@ class m161025_081227_start extends Migration
             'name' => 'VARCHAR(255) NOT NULL',
             'score' => 'REAL NOT NULL DEFAULT 0',
             'answersCount' => 'UNSIGNED REAL NOT NULL DEFAULT 0',
+            'ninetyCount' => 'UNSIGNED INTEGER NOT NULL DEFAULT 0',
+            'fiftyCount' => 'UNSIGNED INTEGER NOT NULL DEFAULT 0',
         ]);
         $this->createIndex('usersScore', 'users', ['score']);
         $this->createIndex('usersAnswersCount', 'users', ['answersCount']);
@@ -27,9 +29,6 @@ class m161025_081227_start extends Migration
             'id' => 'INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL',
             'text' => 'TEXT NOT NULL',
             'answer' => 'REAL NOT NULL',
-            'answersCount' => 'UNSIGNED INTEGER NOT NULL DEFAULT 0',
-            'ninetyCount' => 'UNSIGNED INTEGER NOT NULL DEFAULT 0',
-            'fiftyCount' => 'UNSIGNED INTEGER NOT NULL DEFAULT 0',
             'dateSubmitted' => 'UNSIGNED INTEGER NOT NULL',
             'dateApproved' => 'UNSIGNED INTEGER DEFAULT NULL',
         ]);

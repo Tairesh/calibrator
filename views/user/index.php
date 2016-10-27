@@ -24,6 +24,8 @@ $this->title = Yii::t('app', 'Users').' '.Yii::t('app', 'Brain Calibrator');
             'name',
             'score',
             'answersCount',
+            'ninetyCount',
+            'fiftyCount',
         ],
     ]); ?>
     <?php Pjax::end(); ?>

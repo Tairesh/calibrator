@@ -16,6 +16,7 @@ $this->title = Yii::t('app', 'Brain Calibrator');
         <div class="row" style="margin-top: 3em">     
             <?php $form = ActiveForm::begin([
                 'id' => 'answer-form',
+                'action' => ['site/index'],
                 'options' => ['class' => 'form-inline'],
                 'fieldConfig' => [
                     'template' => "{input}",

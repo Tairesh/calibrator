@@ -142,7 +142,7 @@ class SiteController extends Controller
             Yii::$app->user->login($user, 30*24*60*60);
             
         } else { // signup
-            $res = Auth::signUp(Account::SOURCE_VKAPP, get_object_vars($vkinfo));
+            $res = Account::signUp(Account::SOURCE_VKAPP, get_object_vars($vkinfo));
             if ($res && count($res->getErrors())) {
                 return $this->render('error', ['message' => print_r($res->getErrors(), true), 'name' => Yii::t('app', 'Registration error')]);
             }

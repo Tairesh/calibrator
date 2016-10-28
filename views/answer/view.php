@@ -12,6 +12,9 @@ $this->title = $model->question->text.' '.Yii::t('app', 'Brain Calibrator');
     <div class="jumbotron">
         <h2><?=Html::encode($model->question->text) ?></h2>
         <h1><?=number_format($model->question->answer,0,'.',' ')?></h1>
+        <?php if ($model->question->source): ?>
+            <p><strong><?=Yii::t('app', 'Source')?>:</strong> <?=Html::a(Html::encode($model->question->source), $model->question->source)?></p>
+        <?php endif ?>
         <h3><?=Yii::t('app', 'You answered')?>:</h3>
         <p class="<?=$model->isCorrect?'text-success':''?>" ><strong><?=Yii::t('app', '90%')?>:</strong> <?=Yii::t('app', 'From {0} to {1}', [$model->ninetyStart, $model->ninetyEnd])?></p>
         <p class="<?=$model->isCorrect>1?'text-success':''?>" ><strong><?=Yii::t('app', '50%')?>:</strong> <?=Yii::t('app', 'From {0} to {1}', [$model->fiftyStart, $model->fiftyEnd])?></p>

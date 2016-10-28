@@ -34,6 +34,7 @@ class QuestionController extends Controller
                 'ruleConfig' => [
                     'class' => CalibratorAccessRule::className(),
                 ],
+                'only' => ['create', 'update', 'view', 'delete'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -87,6 +88,28 @@ class QuestionController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+    
+    /**
+     * Creates a new Question model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionSuggest()
+    {
+        $model = new Question();
+
+        if ($model->load(Yii::$app->request->post())) { 
+            $model->dateApproved = null;
+            $model->submitterId = Yii::$app->user->id;
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        }
+        
+        return $this->render('suggest', [
+            'model' => $model,
+        ]);
     }
 
     /**

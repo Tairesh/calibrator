@@ -110,10 +110,11 @@ a.desc:after {
 }
 
 .navbar-brand {
-    padding: 0;
+    padding: 6px;
 }
 
 .navbar-brand>img {
     margin-right: 10px;
     display: inline;
+    border-radius: 50px;
 }

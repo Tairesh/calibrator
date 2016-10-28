@@ -19,8 +19,6 @@ $this->title = Yii::t('app', 'New questions');
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
             'text:ntext',
             'answer',
             'source:url',
@@ -36,7 +34,6 @@ $this->title = Yii::t('app', 'New questions');
                 'format' => 'raw',
                 'options' => ['style' => 'width: 152px;'],
             ],
-//            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
     <?php Pjax::end(); ?>

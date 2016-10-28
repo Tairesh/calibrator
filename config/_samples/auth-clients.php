@@ -9,10 +9,7 @@
             'clientSecret' => '_______',
             'attributeNames' => [
                 'sex',
-                'photo',
-                'photo_big',
                 'photo_50',
-                'photo_400_orig'
             ]
         ],
     ];

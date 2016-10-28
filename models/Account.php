@@ -76,18 +76,8 @@ class Account extends ActiveRecord
     public static function signUp($sourceType, $attributes)
     {
         
-        $user = new User();
-        
-        switch ($sourceType) {
-            case static::SOURCE_GOOGLE:
-                $user->name = $attributes['displayName'];
-                break;
-            case static::SOURCE_VK:
-                $user->name = $attributes['first_name'].' '.$attributes['last_name'];
-                break;
-            default:
-                return null;
-        }
+        $user = new User();        
+        static::updateUserAttributesStatic($user, $sourceType, $attributes);
         
         $transaction = $user->getDb()->beginTransaction();
         if ($user->save()) {
@@ -106,6 +96,33 @@ class Account extends ActiveRecord
         }
     }
     
+    /**
+     * 
+     * @param User $user
+     * @param integer $sourceType
+     * @param array $attributes
+     */
+    public static function updateUserAttributesStatic(User &$user, $sourceType, $attributes)
+    {
+        switch ($sourceType) {
+            case static::SOURCE_VK:
+                $user->name = $attributes['first_name'].' '.$attributes['last_name'];
+                $user->photo = $attributes['photo_50'];
+                $user->gender = $attributes['sex'];
+                break;
+        }
+    }
+    
+    /**
+     * 
+     * @param integer $sourceType
+     * @param array $attributes
+     */
+    public function updateUserAttributes($sourceType, $attributes)
+    {
+        static::updateUserAttributesStatic($this->user, $sourceType, $attributes);
+    }
+
     /**
      * 
      * @param string $sourceName

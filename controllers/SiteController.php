@@ -99,7 +99,9 @@ class SiteController extends Controller
         $account = Account::find()->where($accountParams)->one();
         
         if (Yii::$app->user->isGuest) {
-            if ($account && $account->user) { // login                
+            if ($account && $account->user) { // login 
+                $account->updateUserAttributes(Account::getSourceType($client->getId()), $attributes);
+                $account->user->save();
                 Yii::$app->user->login($account->user, 30*24*60*60);
             } else { // signup
                 $res = Account::signUp(Account::getSourceType($client->getId()), $attributes);
@@ -127,17 +129,19 @@ class SiteController extends Controller
 //        $friends = json_decode(Yii::$app->request->get("api_result"))["response"];
         Yii::$app->vkapi->checkAuthKey($viewer_id, $auth_key);        
         
-        $vkinfo = Yii::$app->vkapi->api('users.get',['user_ids' => $viewer_id])->response[0];
-               
+        $vkinfo = Yii::$app->vkapi->api('users.get',['user_ids' => $viewer_id, 'fields' => 'photo_50,sex'])->response[0];
+        
         $account = Account::find()->where([
             'sourceType' => Account::SOURCE_VKAPP,
             'sourceId' => $viewer_id,
         ])->one();
                 
         if ($account) { // login
-            /** @var \app\models\User */
+            /* @var $user \app\models\User */
             $user = $account->user;
             $user->name = $vkinfo->first_name.' '.$vkinfo->last_name;
+            $user->photo = $vkinfo->photo_50;
+            $user->gender = $vkinfo->sex;
             $user->save();
             
             Yii::$app->user->login($user, 30*24*60*60);

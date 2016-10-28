@@ -6,10 +6,14 @@
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
 AppAsset::register($this);
+
+if (Yii::$app->user->identity->role > 0) {
+    $newQuestionsCount = app\models\Question::find()->where(['dateApproved' => NULL])->count();
+}
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -26,37 +30,32 @@ AppAsset::register($this);
 
     <div id="main-container" class="wrap">
     <?php
-    NavBar::begin([
-        'brandLabel' => Yii::t('app', 'Brain Calibrator'),
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => Yii::$app->user->isGuest ? [] : [            
-            ['label' => Yii::t('app', 'Answer a question'), 'url' => ['/site/index']],
-            ['label' => Yii::$app->user->identity->name, 'url' => ['/user/view', 'id' => Yii::$app->user->id]],
-            ['label' => Yii::t('app', 'Users rating'), 'url' => ['/user/index', 'sort' => '-score']],
-            ['label' => Yii::t('app', 'Submit question'), 'url' => ['/question/suggest']],
-        ],
-    ]);
-    NavBar::end();
+    if (!Yii::$app->user->isGuest) {
+        NavBar::begin([
+            'brandLabel' => Html::img(Yii::$app->user->identity->photo) . Yii::$app->user->identity->name,
+            'brandUrl' => ['/user/view', 'id' => Yii::$app->user->id],
+            'options' => [
+                'class' => 'navbar navbar-default navbar-fixed-top',
+            ],
+        ]);
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav navbar-right'],
+            'items' => array_merge([            
+                ['label' => Yii::t('app', 'Answer a question'), 'url' => ['/site/index']],
+                ['label' => Yii::t('app', 'Users rating'), 'url' => ['/user/index', 'sort' => '-score']],
+                ['label' => Yii::t('app', 'Submit question'), 'url' => ['/question/suggest']],
+            ], Yii::$app->user->identity->role > 0 ? [
+                ['label' => Yii::t('app', 'New questions') . " ({$newQuestionsCount})", 'url' => ['/question/new']],
+            ] : []),
+        ]);
+        NavBar::end();
+    }
     ?>
 
     <div class="container">
         <?= $content ?>
     </div>
 </div>
-
-<!--<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; <?=Html::a('Lazzy Team', '//lazzyteam.pw')?> <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
-    </div>
-</footer>-->
 
 <?php $this->endBody() ?>
 </body>

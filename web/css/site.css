@@ -108,3 +108,12 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.navbar-brand {
+    padding: 0;
+}
+
+.navbar-brand>img {
+    margin-right: 10px;
+    display: inline;
+}

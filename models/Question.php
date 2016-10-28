@@ -75,12 +75,6 @@ class Question extends ActiveRecord
         ];
     }
     
-    public function delete()
-    {
-        $this->dateApproved = NULL;
-        return $this->save();
-    }
-
     /**
      * @return \yii\db\ActiveQuery
      */

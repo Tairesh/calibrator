@@ -11,6 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use app\components\CalibratorAccessRule;
+use yii\data\ActiveDataProvider;
 
 /**
  * QuestionController implements the CRUD actions for Question model.
@@ -34,7 +35,7 @@ class QuestionController extends Controller
                 'ruleConfig' => [
                     'class' => CalibratorAccessRule::className(),
                 ],
-                'only' => ['create', 'update', 'view', 'delete'],
+                'only' => ['new', 'create', 'update', 'approve', 'view', 'delete'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -56,6 +57,24 @@ class QuestionController extends Controller
 
         return $this->render('index', [
             'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Lists new Question models.
+     * @return mixed
+     */
+    public function actionNew()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Question::find()->where(['dateApproved' => NULL])->with('submitter'),
+            'pagination' => [
+                'pageSize' => 20,
+            ], 
+        ]);
+
+        return $this->render('new', [
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -123,6 +142,27 @@ class QuestionController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Updates an existing Question model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionApprove($id)
+    {
+        
+        $model = $this->findModel($id);
+        $model->dateApproved = time();
+
+        if ($model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [

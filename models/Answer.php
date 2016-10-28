@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "answers".
@@ -39,6 +40,20 @@ class Answer extends ActiveRecord
         return 'answers';
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'dateSubmitted',
+                'updatedAtAttribute' => false,
+            ],
+        ];
+    }
+    
     /**
      * @inheritdoc
      */
@@ -95,8 +110,6 @@ class Answer extends ActiveRecord
     public function beforeSave($insert)
     {
         if ($insert) {
-            $this->dateSubmitted = time();
-                       
             $this->calcIsCorrect();
             $this->calcScore();
         }

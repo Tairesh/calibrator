@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "questions".
@@ -10,13 +12,15 @@ use Yii;
  * @property integer $id
  * @property string $text
  * @property double $answer
+ * @property string $source
+ * @property integer $submitterId
  * @property integer $dateSubmitted
  * @property integer $dateApproved
  *
  * @property Answer[] $answers
  * @property User[] $users
  */
-class Question extends \yii\db\ActiveRecord
+class Question extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -32,10 +36,26 @@ class Question extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['text', 'answer', 'dateSubmitted'], 'required'],
+            [['text', 'answer'], 'required'],
             [['text'], 'string'],
-            [['dateSubmitted', 'dateApproved'], 'integer', 'min' => 0],
+            [['source'], 'string', 'max' => 255],
+            [['dateSubmitted', 'dateApproved', 'submitterId'], 'integer', 'min' => 0],
             [['answer'], 'number'],
+            [['submitterId'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['submitterId' => 'id']],
+        ];
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'dateSubmitted',
+                'updatedAtAttribute' => false,
+            ],
         ];
     }
 
@@ -48,6 +68,8 @@ class Question extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'text' => Yii::t('app', 'Text'),
             'answer' => Yii::t('app', 'Answer'),
+            'source' => Yii::t('app', 'Source'),
+            'submitterId' => Yii::t('app', 'Submitter ID'),
             'dateSubmitted' => Yii::t('app', 'Date Submitted'),
             'dateApproved' => Yii::t('app', 'Date Approved'),
         ];
@@ -67,6 +89,14 @@ class Question extends \yii\db\ActiveRecord
     public function getUsers()
     {
         return $this->hasMany(User::className(), ['id' => 'userId'])->viaTable('answers', ['questionId' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSubmitter()
+    {
+        return $this->hasOne(User::className(), ['id' => 'submitterId']);
     }
     
     /**
@@ -105,7 +135,7 @@ class Question extends \yii\db\ActiveRecord
     {
         return static::findBySql('SELECT q.* FROM '.static::tableName().' q 
             LEFT JOIN '.Answer::tableName().' a ON a.questionId = q.id AND a.userId = '.$user->id.' 
-            WHERE a.id IS NULL AND q.dateApproved IS NOT NULL
+            WHERE a.id IS NULL AND q.dateApproved IS NOT NULL AND q.submitterId <> '.$user->id.'
             ORDER BY RANDOM()
             ')->one();
     }

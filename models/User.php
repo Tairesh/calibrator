@@ -11,10 +11,14 @@ use yii\web\IdentityInterface;
  *
  * @property integer $id
  * @property string $name
+ * @property string $photo
+ * @property integer $gender
  * @property double $score
  * @property integer $answersCount
  * @property integer $ninetyCount
  * @property integer $fiftyCount
+ * @property integer $questionsCount
+ * @property integer $role
  *
  * @property Account[] $accounts
  * @property Answer[] $answers
@@ -22,6 +26,27 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    
+    /**
+     * Обычный юзер
+     */
+    const ROLE_USER = 0;
+    
+    /**
+     * Модератор (может принимать заявки на вопросы и создавать их)
+     */
+    const ROLE_MODERATOR = 1;
+    
+    /**
+     * Администратор (-//- и может назначать модераторов)
+     */
+    const ROLE_ADMIN = 2;
+    
+    // пол
+    const GENDER_UNKNOWN = 0;
+    const GENDER_FEMALE = 1;
+    const GENDER_MALE = 2;
+    
     /**
      * @inheritdoc
      */
@@ -36,10 +61,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name', 'photo'], 'required'],
             [['score'], 'number'],
-            [['answersCount', 'ninetyCount', 'fiftyCount'], 'integer', 'min' => 0],
-            [['name'], 'string', 'max' => 255],
+            [['answersCount', 'ninetyCount', 'fiftyCount', 'questionsCount'], 'integer', 'min' => 0],
+            [['name', 'photo'], 'string', 'max' => 255],
+            [['gender', 'role'], 'integer', 'min' => 0, 'max' => 2],
         ];
     }
 
@@ -51,10 +77,14 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
+            'photo' => Yii::t('app', 'Photo'),
+            'gender' => Yii::t('app', 'Gender'),
             'score' => Yii::t('app', 'Score'),
             'answersCount' => Yii::t('app', 'Answers Count'),
             'ninetyCount' => Yii::t('app', 'Ninety Count'),
             'fiftyCount' => Yii::t('app', 'Fifty Count'),
+            'questionsCount' => Yii::t('app', 'Questions Count'),
+            'role' => Yii::t('app', 'Role'),
         ];
     }
 

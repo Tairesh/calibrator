@@ -74,6 +74,12 @@ class Question extends ActiveRecord
             'dateApproved' => Yii::t('app', 'Date Approved'),
         ];
     }
+    
+    public function delete()
+    {
+        $this->dateApproved = NULL;
+        return $this->save();
+    }
 
     /**
      * @return \yii\db\ActiveQuery

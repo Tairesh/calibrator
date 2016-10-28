@@ -5,9 +5,12 @@ namespace app\controllers;
 use Yii;
 use app\models\Question;
 use app\models\QuestionSearch;
+use app\models\User;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use app\components\CalibratorAccessRule;
 
 /**
  * QuestionController implements the CRUD actions for Question model.
@@ -26,6 +29,18 @@ class QuestionController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'ruleConfig' => [
+                    'class' => CalibratorAccessRule::className(),
+                ],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [User::ROLE_MODERATOR, User::ROLE_ADMIN],
+                    ],
+                ],
+            ],            
         ];
     }
 

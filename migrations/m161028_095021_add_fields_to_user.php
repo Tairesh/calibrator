@@ -14,7 +14,7 @@ class m161028_095021_add_fields_to_user extends Migration
             'photo' => 'VARCHAR(255) NOT NULL',
             'gender' => 'UNSIGNED INTEGER(1) NOT NULL DEFAULT 0',
             'score' => 'REAL NOT NULL DEFAULT 0',
-            'answersCount' => 'UNSIGNED REAL NOT NULL DEFAULT 0',
+            'answersCount' => 'UNSIGNED INTEGER NOT NULL DEFAULT 0',
             'ninetyCount' => 'UNSIGNED INTEGER NOT NULL DEFAULT 0',
             'fiftyCount' => 'UNSIGNED INTEGER NOT NULL DEFAULT 0',
             'role' => 'UNSIGNED INTEGER(1) NOT NULL DEFAULT 0',

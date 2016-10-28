@@ -19,7 +19,7 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/theme.css',
-        'css/site.css',
+        'css/site.css?v2',
     ];
     public $js = [        
         '//vk.com/js/api/xd_connection.js',

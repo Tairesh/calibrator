@@ -75,6 +75,18 @@ class Question extends ActiveRecord
         ];
     }
     
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            if ($this->submitterId) {
+                $user = User::findOne($this->submitterId);
+                $user->questionsCount++;
+                $user->save();
+            }
+        }
+        return parent::afterSave($insert, $changedAttributes);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

@@ -10,7 +10,7 @@ use app\assets\AppAsset;
 
 AppAsset::register($this);
 
-if (Yii::$app->user->identity->role > 0) {
+if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role > 0) {
     $newQuestionsCount = app\models\Question::find()->where(['dateApproved' => NULL])->count();
 }
 

@@ -35,7 +35,7 @@ class QuestionController extends Controller
                 'ruleConfig' => [
                     'class' => CalibratorAccessRule::className(),
                 ],
-                'only' => ['new', 'create', 'update', 'approve', 'view', 'delete'],
+                'only' => ['new', 'create', 'update', 'approve', 'delete'],
                 'rules' => [
                     [
                         'allow' => true,

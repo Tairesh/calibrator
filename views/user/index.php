@@ -24,7 +24,7 @@ $this->title = Yii::t('app', 'Users').' '.Yii::t('app', 'Brain Calibrator');
             [
                 'attribute' => 'name',
                 'value' => function ($row) {
-                    return Html::a($row['name'], ['user/view', 'id' => $row['id']]);
+                    return Html::a(Html::img($row['photo'], ['style' => 'width:16px']), ['user/view', 'id' => $row['id']]).' '.Html::a($row['name'], ['user/view', 'id' => $row['id']]);
                 },
                 'format' => 'raw',
             ],

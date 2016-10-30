@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\User;
 use app\models\UserSearch;
+use app\models\AnswerSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -114,8 +115,15 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
+        $searchModel = new AnswerSearch();
+        $searchModel->userId = $id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->setSort(['attributes' => ['-dateSubmitted']]);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

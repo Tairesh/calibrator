@@ -44,7 +44,7 @@ $this->title = $model->name.' '.Yii::t('app', 'Brain Calibrator');
         </p>
         <?php endif ?>
     </div>     
-    <?php if ($model->answersCount > 9 && $model->id == Yii::$app->user->id): ?>
+    <?php if ($model->answersCount > 0 && $model->id == Yii::$app->user->id): ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [

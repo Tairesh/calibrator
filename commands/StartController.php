@@ -23,6 +23,6 @@ class StartController extends Controller
             throw new Exception(Yii::t('app', 'User #1 not found'));
         }
         User::updateAll(['role' => 2], ['id' => 1]);
-        Question::updateAll(['submitterId' => 1]. ['submitterId' => NULL]);
+        Question::updateAll(['submitterId' => 1], ['submitterId' => NULL]);
     }
 }

@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use app\components\CommasNumbersBehavior;
 
 /**
  * This is the model class for table "answers".
@@ -51,6 +52,10 @@ class Answer extends ActiveRecord
                 'createdAtAttribute' => 'dateSubmitted',
                 'updatedAtAttribute' => false,
             ],
+            [
+                'class' => CommasNumbersBehavior::className(),
+                'attributes' => ['fiftyStart', 'fiftyEnd', 'ninetyStart', 'ninetyEnd'],
+            ]
         ];
     }
     
@@ -62,13 +67,14 @@ class Answer extends ActiveRecord
         return [
             [['userId', 'questionId', 'fiftyStart', 'fiftyEnd', 'ninetyStart', 'ninetyEnd', 'isCorrect', 'score'], 'required'],
             [['userId', 'questionId', 'isCorrect', 'dateSubmitted'], 'integer', 'min' => 0],
-            [['fiftyStart', 'fiftyEnd', 'ninetyStart', 'ninetyEnd', 'score'], 'number'],
+            [['score'], 'number'],
             [['userId', 'questionId'], 'unique', 'targetAttribute' => ['userId', 'questionId'], 'message' => 'The combination of User ID and Question ID has already been taken.'],
             [['questionId'], 'exist', 'skipOnError' => true, 'targetClass' => Question::className(), 'targetAttribute' => ['questionId' => 'id']],
             [['userId'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['userId' => 'id']],
             [['fiftyStart'], 'fiftyStartValidator'],
             [['fiftyEnd'], 'fiftyEndValidator'],
             [['ninetyEnd'], 'ninetyEndValidator'],
+            [['fiftyStart', 'fiftyEnd', 'ninetyStart', 'ninetyEnd'], 'numberWithCommasValidator'],
         ];
     }
 
@@ -161,6 +167,14 @@ class Answer extends ActiveRecord
             return false;
         }
         return true;
+    }
+    
+    public function numberWithCommasValidator($attribute)
+    {
+        $val = str_replace(' ', '', $this->$attribute);
+        if (!preg_match('/^\s*[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s*$/', "$val")) {
+            $this->addError($attribute, Yii::t('yii', '{0} must be a number', [$this->getAttributeLabel($attribute)]));
+        }
     }
     
     private function calcIsCorrect()

@@ -43,7 +43,7 @@ return [
     'Fifty diapasons too big' => 'Диапазоны 50%-уверенности слишком широкие',
     'Fifty diapasons too small' => 'Диапазоны 50%-уверенности слишком узкие',
     'From' => 'От',
-    'From {0} to {1}' => 'От {0} до {1}',
+    'From <strong>{0}</strong> to <strong>{1}</strong>' => 'От <strong>{0}</strong> до <strong>{1}</strong>',
     'Game over' => 'Игра окончена',
     'Gender' => 'Пол',
     'ID' => 'ID',

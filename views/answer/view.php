@@ -16,8 +16,8 @@ $this->title = $model->question->text.' '.Yii::t('app', 'Brain Calibrator');
             <p><strong><?=Yii::t('app', 'Source')?>:</strong> <?=Html::a(Html::encode($model->question->source), $model->question->source)?></p>
         <?php endif ?>
         <h3><?=Yii::t('app', 'You answered')?>:</h3>
-        <p class="<?=$model->isCorrect?'text-success':'text-danger'?>" ><strong><?=Yii::t('app', '90%')?>:</strong> <?=Yii::t('app', 'From {0} to {1}', [$model->ninetyStart, $model->ninetyEnd])?></p>
-        <p class="<?=$model->isCorrect>1?'text-success':'text-danger'?>" ><strong><?=Yii::t('app', '50%')?>:</strong> <?=Yii::t('app', 'From {0} to {1}', [$model->fiftyStart, $model->fiftyEnd])?></p>
+        <p class="<?=$model->isCorrect?'text-success':'text-danger'?>" ><strong><?=Yii::t('app', '90%')?>:</strong> <?=Yii::t('app', 'From <strong>{0}</strong> to <strong>{1}</strong>', [number_format($model->ninetyStart,0,'.',' '), number_format($model->ninetyEnd,0,'.',' ')])?></p>
+        <p class="<?=$model->isCorrect>1?'text-success':'text-danger'?>" ><strong><?=Yii::t('app', '50%')?>:</strong> <?=Yii::t('app', 'From <strong>{0}</strong> to <strong>{1}</strong>', [number_format($model->fiftyStart,0,'.',' '), number_format($model->fiftyEnd,0,'.',' ')])?></p>
         <h2><?=Yii::t('app', 'Your score')?>: <label class="label <?=$model->score > 50 ? 'label-success' : 'label-warning'?>"><?=$model->score?></label></h2>
         <p class="help-block"><?=Yii::t('app', 'You are answered this question')?> <?=date('d-m-Y',$model->dateSubmitted)?></p>
         <p>

@@ -18,4 +18,12 @@ $(function () {
 //    if (self.parent.frames.length === 0) { // мы не в приложении вк
 //        $('#account_settings_button').show();
 //    }
+    
+    $('.commas-input').keyup(function(){
+        $(this).val(numberWithCommas($(this).val().replace(/\s/g,'')));
+    });
 })
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}

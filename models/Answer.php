@@ -6,6 +6,7 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use app\components\CommasNumbersBehavior;
+use app\components\VkSetLevelBehavior;
 
 /**
  * This is the model class for table "answers".
@@ -55,7 +56,8 @@ class Answer extends ActiveRecord
             [
                 'class' => CommasNumbersBehavior::className(),
                 'attributes' => ['fiftyStart', 'fiftyEnd', 'ninetyStart', 'ninetyEnd'],
-            ]
+            ],
+            VkSetLevelBehavior::className(),
         ];
     }
     

@@ -2,6 +2,9 @@
 
 namespace app\components;
 
+use Yii;
+use yii\web\HttpException;
+
 /**
  * VkApi
  */
@@ -10,6 +13,7 @@ class VkApi extends \yii\base\Module
     
     public $appId;
     public $appKey;
+    public $appToken;
     public $apiVersion = '5.59';
     
     public function __construct()
@@ -46,6 +50,11 @@ class VkApi extends \yii\base\Module
         } catch (\Exception $exception) {
             throw new \yii\base\Exception($exception->getMessage(), $exception->getCode());
         }
+    }
+    
+    public function secureApi($method, $params = [])
+    {
+        return $this->api($method, array_merge($params, ['client_secret' => $this->appKey, 'access_token' => $this->appToken]));
     }
     
     /**

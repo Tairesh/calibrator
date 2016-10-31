@@ -67,6 +67,7 @@ $config = [
             'class' => 'app\components\VkApi',
             'appId' => $params['vkapp']['id'],
             'appKey' => $params['vkapp']['key'],
+            'appToken' => $params['vkapp']['token'],
         ],
     ],
     'params' => $params,

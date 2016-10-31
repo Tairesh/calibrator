@@ -12,9 +12,8 @@ $this->title = Yii::t('app', 'New questions');
 
 ?>
 <div class="question-new">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php Pjax::begin(); ?>    
+    <?php Pjax::begin(); ?>   
+    <h1><?= Html::encode($this->title) ?></h1> 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [

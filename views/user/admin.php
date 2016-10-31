@@ -11,11 +11,10 @@ $this->title = Yii::t('app', 'Users').' '.Yii::t('app', 'Brain Calibrator');
 
 ?>
 <div class="user-admin">
-
-    <h1><?=Yii::t('app', 'Users rating')?></h1>
+    <?php Pjax::begin(); ?>    
+    <h1><?=Yii::t('app', 'Users')?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?php Pjax::begin(); ?>    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

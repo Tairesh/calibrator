@@ -11,14 +11,13 @@ $this->title = Yii::t('app', 'Questions');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="question-index">
-
+    <?php Pjax::begin(); ?>   
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?= Html::a(Yii::t('app', 'Create Question'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-    <?php Pjax::begin(); ?>    
+    </p> 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -29,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'text:ntext',
             'answer',
             'source',
-            'submitterId',
+            'submitter.name',
             // 'dateSubmitted',
             // 'dateApproved',
 

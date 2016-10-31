@@ -6,11 +6,13 @@ use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = $model->name.' '.Yii::t('app', 'Brain Calibrator');
 
 ?>
 <div class="user-view">
+    <?php Pjax::begin(); ?>    
     <div class="jumbotron">
         <h1><?=Html::img($model->photo, ['style' => 'border-radius:50px'])?> <?= Html::encode($model->name) ?></h1>
         <h2><?=$model->id == Yii::$app->user->id ? Yii::t('app', 'Your score') : Yii::t('app', 'Score')?>: <span class="label label-success"><?=$model->score?></span></h2>
@@ -42,7 +44,6 @@ $this->title = $model->name.' '.Yii::t('app', 'Brain Calibrator');
         </p>
         <?php endif ?>
     </div>        
-    <?php Pjax::begin(); ?>    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
@@ -59,8 +60,8 @@ $this->title = $model->name.' '.Yii::t('app', 'Brain Calibrator');
                 'attribute' => 'isCorrect',
                 'value' => function($row) {
                     return Html::a([
-                        0 => '<span class="label label-red">'.Yii::t('app', 'Incorrect').'</span>',
-                        1 => '<span class="label label-danger">'.Yii::t('app', '90%').'</span>',
+                        0 => '<span class="label label-danger">'.Yii::t('app', 'Incorrect').'</span>',
+                        1 => '<span class="label label-warning">'.Yii::t('app', '90%').'</span>',
                         2 => '<span class="label label-success">'.Yii::t('app', '50%').'</span>',
                     ][(int)$row['isCorrect']], ['answer/view', 'id' => $row['id']]);
                 },

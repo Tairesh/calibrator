@@ -197,7 +197,17 @@ class Answer extends ActiveRecord
             }
         }
         
-        $this->score = $score;
+        $this->score = round($score,2);
+    }
+    
+    /**
+     * 
+     * @param integer $id
+     * @return yii\db\ActiveQuery
+     */
+    public static function findByUserId($id)
+    {
+        return static::find()->where(['userId' => $id])->with('question')->orderBy(['dateSubmitted' => SORT_DESC]);
     }
     
 }

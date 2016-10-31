@@ -5,12 +5,13 @@ namespace app\controllers;
 use Yii;
 use app\models\User;
 use app\models\UserSearch;
-use app\models\AnswerSearch;
+use app\models\Answer;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use app\components\CalibratorAccessRule;
+use yii\data\ActiveDataProvider;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -115,14 +116,12 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
-        $searchModel = new AnswerSearch();
-        $searchModel->userId = $id;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->setSort(['attributes' => ['-dateSubmitted']]);
-
+        $dataProvider = new ActiveDataProvider([
+            'query' => Answer::findByUserId($id),
+        ]);
+        
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }

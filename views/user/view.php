@@ -43,7 +43,8 @@ $this->title = $model->name.' '.Yii::t('app', 'Brain Calibrator');
             <?php endif ?>
         </p>
         <?php endif ?>
-    </div>        
+    </div>     
+    <?php if ($model->answersCount > 9 && $model->id == Yii::$app->user->id): ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
@@ -70,5 +71,6 @@ $this->title = $model->name.' '.Yii::t('app', 'Brain Calibrator');
             'dateSubmitted:date',
         ],
     ]); ?>
+    <?php endif ?>
     <?php Pjax::end(); ?>
 </div>

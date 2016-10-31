@@ -35,7 +35,7 @@ class QuestionController extends Controller
                 'ruleConfig' => [
                     'class' => CalibratorAccessRule::className(),
                 ],
-                'only' => ['new', 'create', 'update', 'approve', 'delete'],
+                'only' => ['index', 'new', 'create', 'update', 'approve', 'delete'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -116,12 +116,19 @@ class QuestionController extends Controller
      */
     public function actionSuggest()
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['/site/login']);
+        }
+        
         $model = new Question();
 
         if ($model->load(Yii::$app->request->post())) { 
             $model->dateApproved = null;
             $model->submitterId = Yii::$app->user->id;
             if ($model->save()) {
+                if (Yii::$app->user->identity->role > 0) {
+                    $model->approve();
+                }
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }

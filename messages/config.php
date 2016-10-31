@@ -49,7 +49,7 @@ return [
 
     // Message categories to ignore
     'ignoreCategories' => [
-        'yii',
+//        'yii',
     ],
 
     /*

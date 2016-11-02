@@ -10,6 +10,10 @@ function resizeVkAppWindow() {
     }
 }
 
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
 $(function () {    
     if (typeof VK !== 'undefined') {
         setInterval(resizeVkAppWindow, 500);
@@ -19,11 +23,7 @@ $(function () {
 //        $('#account_settings_button').show();
 //    }
     
-    $('.commas-input').keyup(function(){
+    $('.commas-input').on('keyup', function(){
         $(this).val(numberWithCommas($(this).val().replace(/\s/g,'')));
     });
 })
-
-function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-}

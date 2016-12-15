@@ -2,6 +2,6 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'sqlite:'.dirname(__FILE__).'/../database/politsim.sqlite',
+    'dsn' => 'sqlite:'.dirname(__FILE__).'/../database/calibrator.sqlite',
     'charset' => 'utf8',
 ];

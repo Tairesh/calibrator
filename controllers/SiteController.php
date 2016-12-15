@@ -7,10 +7,10 @@ use yii\web\Controller;
 use yii\authclient\AuthAction;
 use yii\bootstrap\ActiveForm;
 use yii\web\Response;
-use yii\web\HttpException;
 use app\models\Account;
 use app\models\Question;
 use app\models\Answer;
+use app\models\AccountSource;
 
 class SiteController extends Controller
 {
@@ -84,6 +84,15 @@ class SiteController extends Controller
             return $this->goHome();
         }
         
+        $user = new \app\models\User([
+            'name' => 'Test',
+            'photo' => 'http://placehold.it/50x50',
+            'gender' => \app\models\UserGender::MALE,
+            'role' => \app\models\UserRole::ADMIN,
+        ]);
+        $user->save();
+        Yii::$app->user->login($user);
+        
         return $this->render('login');
     }
     
@@ -132,7 +141,7 @@ class SiteController extends Controller
         $vkinfo = Yii::$app->vkapi->api('users.get',['user_ids' => $viewer_id, 'fields' => 'photo_50,sex'])->response[0];
         
         $account = Account::find()->where([
-            'sourceType' => Account::SOURCE_VKAPP,
+            'sourceType' => \app\models\AccountSource::VKAPP,
             'sourceId' => $viewer_id,
         ])->one();
                 
@@ -147,7 +156,7 @@ class SiteController extends Controller
             Yii::$app->user->login($user, 30*24*60*60);
             
         } else { // signup
-            $res = Account::signUp(Account::SOURCE_VKAPP, get_object_vars($vkinfo));
+            $res = Account::signUp(AccountSource::VKAPP, get_object_vars($vkinfo));
             if ($res && count($res->getErrors())) {
                 return $this->render('error', ['message' => print_r($res->getErrors(), true), 'name' => Yii::t('app', 'Registration error')]);
             }

@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\User;
 use app\models\UserSearch;
+use app\models\UserRole;
 use app\models\Answer;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -40,7 +41,7 @@ class UserController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => [User::ROLE_ADMIN],
+                        'roles' => [UserRole::ADMIN],
                     ],
                 ],
             ],        

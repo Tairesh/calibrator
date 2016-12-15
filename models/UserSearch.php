@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\data\Sort;
 use app\models\User;
 
 /**
@@ -12,6 +13,9 @@ use app\models\User;
  */
 class UserSearch extends User
 {
+    
+    public $fullName;
+    
     /**
      * @inheritdoc
      */
@@ -40,14 +44,48 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find();
+        $query = User::find()
+                ->addSelect([
+                    '*',
+                    'ABS(ROUND(100*ninetyCount/answersCount-90)) as ninetyPercentDelta',
+                    'ABS(ROUND(100*fiftyCount/answersCount-90)) as fiftyPercentDelta',
+                ]);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
+        
+        $dataProvider->setSort(new Sort([
+            'attributes' => [
+                'name',
+                'score' => [
+                    'asc' => ['score' => SORT_ASC],
+                    'desc' => ['score' => SORT_DESC],
+                    'default' => SORT_DESC
+                ],
+                'answersCount' => [
+                    'asc' => ['score' => SORT_ASC],
+                    'desc' => ['score' => SORT_DESC],
+                    'default' => SORT_DESC
+                ],
+                'ninetyPercent' => [
+                    'asc' => ['ninetyPercentDelta' => SORT_ASC],
+                    'desc' => ['ninetyPercentDelta' => SORT_DESC],
+                    'default' => SORT_DESC
+                ],
+                'fiftyPercent' => [
+                    'asc' => ['fiftyPercentDelta' => SORT_ASC],
+                    'desc' => ['fiftyPercentDelta' => SORT_DESC],
+                    'default' => SORT_DESC
+                ],
+            ],
+            'defaultOrder' => [
+                'score' => SORT_DESC,
+            ],
+        ]));
+        
         $this->load($params);
 
         if (!$this->validate()) {

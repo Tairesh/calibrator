@@ -30,15 +30,15 @@ $this->title = Yii::t('app', 'Users').' '.Yii::t('app', 'Brain Calibrator');
             'score',
             'answersCount:integer',
             [
-                'attribute' => 'ninetyCount',
+                'attribute' => 'ninetyPercent',
                 'value' => function ($row) {
-                    return ($row['answersCount'] > 0 ? number_format(100*$row['ninetyCount']/$row['answersCount'],0) : 0).'%';
+                    return $row['ninetyPercent'].'%';
                 },
             ],
             [
-                'attribute' => 'fiftyCount',
+                'attribute' => 'fiftyPercent',
                 'value' => function ($row) {
-                    return ($row['answersCount'] > 0 ? number_format(100*$row['fiftyCount']/$row['answersCount'],0) : 0).'%';
+                    return $row['fiftyPercent'].'%';
                 },
             ],
         ],

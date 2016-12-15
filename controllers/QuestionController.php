@@ -5,7 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Question;
 use app\models\QuestionSearch;
-use app\models\User;
+use app\models\UserRole;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -39,7 +39,7 @@ class QuestionController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => [User::ROLE_MODERATOR, User::ROLE_ADMIN],
+                        'roles' => [UserRole::MODERATOR, UserRole::ADMIN],
                     ],
                 ],
             ],            

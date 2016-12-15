@@ -18,12 +18,6 @@ use yii\db\ActiveRecord;
 class Account extends ActiveRecord
 {
     
-    const SOURCE_GOOGLE = 1;
-    const SOURCE_VK = 2;
-    const SOURCE_VKAPP = 2;
-    const SOURCE_FACEBOOK = 4;
-    const SOURCE_TWITTER = 5;
-    
     /**
      * @inheritdoc
      */
@@ -105,7 +99,8 @@ class Account extends ActiveRecord
     public static function updateUserAttributesStatic(User &$user, $sourceType, $attributes)
     {
         switch ($sourceType) {
-            case static::SOURCE_VK:
+            case AccountSource::VK:
+            case AccountSource::VKAPP:
                 $user->name = $attributes['first_name'].' '.$attributes['last_name'];
                 $user->photo = $attributes['photo_50'];
                 $user->gender = $attributes['sex'];
@@ -132,15 +127,15 @@ class Account extends ActiveRecord
     {
         switch ($sourceName) {
             case 'google':
-                return static::SOURCE_GOOGLE;
+                return AccountSource::GOOGLE;
             case 'facebook':
-                return static::SOURCE_FACEBOOK;
+                return AccountSource::FACEBOOK;
             case 'twitter':
-                return static::SOURCE_TWITTER;
+                return AccountSource::TWITTER;
             case 'vkontakte':
-                return static::SOURCE_VK;
+                return AccountSource::VK;
             case 'vkapp':
-                return static::SOURCE_VKAPP;
+                return AccountSource::VKAPP;
         }
     }
     

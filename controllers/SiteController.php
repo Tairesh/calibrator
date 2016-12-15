@@ -43,17 +43,22 @@ class SiteController extends Controller
             return $this->redirect(['site/login']);
         }
         
-        $currentQuestionId = Yii::$app->session->get('currentQuestionId');
+        
+        $currentQuestionId = Yii::$app->request->get('questionId');
+        if (is_null($currentQuestionId)) {
+            $currentQuestionId = Yii::$app->session->get('currentQuestionId');
+        }
+        
         if (!$currentQuestionId || $skip) {
             $question = Question::findRandom(Yii::$app->user->identity);
             if (is_null($question)) {
                 Yii::$app->session->set('currentQuestionId', null);
                 return $this->render('win');
             }
-            Yii::$app->session->set('currentQuestionId', $question->id);
         } else {
             $question = Question::findOne($currentQuestionId);
         }
+        Yii::$app->session->set('currentQuestionId', $question->id);
         
         $answer = new Answer([
             'questionId' => $question->id,

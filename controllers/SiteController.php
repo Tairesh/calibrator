@@ -83,16 +83,7 @@ class SiteController extends Controller
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-        
-        $user = new \app\models\User([
-            'name' => 'Test',
-            'photo' => 'http://placehold.it/50x50',
-            'gender' => \app\models\UserGender::MALE,
-            'role' => \app\models\UserRole::ADMIN,
-        ]);
-        $user->save();
-        Yii::$app->user->login($user);
-        
+                
         return $this->render('login');
     }
     

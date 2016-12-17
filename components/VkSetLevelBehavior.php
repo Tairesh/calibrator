@@ -5,7 +5,7 @@ namespace app\components;
 use Yii;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
-use app\models\Account;
+use app\models\AccountSource;
 
 /**
  * 
@@ -29,7 +29,7 @@ class VkSetLevelBehavior extends Behavior
         /* @var $user \app\models\User */
         $user = $event->sender->user;
         foreach ($user->accounts as $account) {
-            if ($account->sourceType == Account::SOURCE_VKAPP) {
+            if ($account->sourceType == AccountSource::VKAPP) {
                 Yii::$app->vkapi->secureApi('secure.setUserLevel', [
                     'user_id' => $account->sourceId,
                     'level' => $user->answersCount,

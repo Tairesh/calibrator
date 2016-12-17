@@ -47,10 +47,11 @@ class UserSearch extends User
         $query = User::find()
                 ->addSelect([
                     '*',
-                    'ABS(ROUND(100*ninetyCount/answersCount-90)) as ninetyPercentDelta',
-                    'ABS(ROUND(100*fiftyCount/answersCount-90)) as fiftyPercentDelta',
-                ]);
-
+                    'ROUND(ABS(ninetyCount/(answersCount*1.0)-0.9)*100) as ninetyPercentDelta',
+                    'ROUND(ABS(fiftyCount/(answersCount*1.0)-0.5)*100) as fiftyPercentDelta',
+                ])
+                ->andWhere(['>', 'score', 0]);
+        
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -60,25 +61,17 @@ class UserSearch extends User
         $dataProvider->setSort(new Sort([
             'attributes' => [
                 'name',
-                'score' => [
-                    'asc' => ['score' => SORT_ASC],
-                    'desc' => ['score' => SORT_DESC],
-                    'default' => SORT_DESC
-                ],
-                'answersCount' => [
-                    'asc' => ['score' => SORT_ASC],
-                    'desc' => ['score' => SORT_DESC],
-                    'default' => SORT_DESC
-                ],
+                'score',
+                'answersCount',
                 'ninetyPercent' => [
                     'asc' => ['ninetyPercentDelta' => SORT_ASC],
                     'desc' => ['ninetyPercentDelta' => SORT_DESC],
-                    'default' => SORT_DESC
+                    'default' => SORT_ASC
                 ],
                 'fiftyPercent' => [
                     'asc' => ['fiftyPercentDelta' => SORT_ASC],
                     'desc' => ['fiftyPercentDelta' => SORT_DESC],
-                    'default' => SORT_DESC
+                    'default' => SORT_ASC
                 ],
             ],
             'defaultOrder' => [

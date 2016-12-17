@@ -20,7 +20,7 @@ class StartController extends Controller
     public function actionIndex()
     {
         if (!User::find()->where(['id' => 1])->count()) {
-            throw new Exception(Yii::t('app', 'User #1 not found'));
+            throw new Exception('User #1 not found');
         }
         User::updateAll(['role' => 2], ['id' => 1]);
         Question::updateAll(['submitterId' => 1], ['submitterId' => NULL]);

@@ -25,7 +25,6 @@ return [
     'Answer a question' => 'Ответить на вопрос',
     'Answers Count' => 'Вопросов отвечено',
     'Approve' => 'Принять',
-    'Are you sure you want to delete this item?' => 'Вы действительно хотите удалить?',
     'Brain Calibrator' => 'Калибровка мозга',
     'Congratulations! Questions is over, you are answered it all!' => 'Поздравляем!<br> Ты прошёл игру!',
     'Create' => 'Создать',

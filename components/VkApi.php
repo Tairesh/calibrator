@@ -43,6 +43,7 @@ class VkApi extends \yii\base\Module
             $params['v'] = $this->apiVersion;
         }
         $params['https'] = 1;
+        $params['lang'] = 0;
         
         try {
             $data = file_get_contents('https://api.vk.com/method/'.$method.'?'.http_build_query($params));        

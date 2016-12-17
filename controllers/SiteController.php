@@ -137,19 +137,16 @@ class SiteController extends Controller
         $vkinfo = Yii::$app->vkapi->api('users.get',['user_ids' => $viewer_id, 'fields' => 'photo_50,sex'])->response[0];
         
         $account = Account::find()->where([
-            'sourceType' => \app\models\AccountSource::VKAPP,
+            'sourceType' => AccountSource::VKAPP,
             'sourceId' => $viewer_id,
         ])->one();
                 
         if ($account) { // login
             /* @var $user \app\models\User */
-            $user = $account->user;
-            $user->name = $vkinfo->first_name.' '.$vkinfo->last_name;
-            $user->photo = $vkinfo->photo_50;
-            $user->gender = $vkinfo->sex;
-            $user->save();
+            $account->updateUserAttributes(AccountSource::VKAPP, get_object_vars($vkinfo));
+            $account->user->save();
             
-            Yii::$app->user->login($user, 30*24*60*60);
+            Yii::$app->user->login($account->user, 30*24*60*60);
             
         } else { // signup
             $res = Account::signUp(AccountSource::VKAPP, get_object_vars($vkinfo));

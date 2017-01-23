@@ -19,6 +19,7 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property Answer[] $answers
  * @property User[] $users
+ * @property User $submitter
  */
 class Question extends ActiveRecord
 {

@@ -81,6 +81,7 @@ return [
     'Submit' => 'Отправить',
     'Submit question' => 'Отправить вопрос',
     'Submitter ID' => 'ID Отправителя',
+    'Submitter:' => 'Автор вопроса:',
     'Suggest Question' => 'Предложить вопрос',
     'Text' => 'Текст',
     'The above error occurred while the Web server was processing your request.' => 'Во время обработки вашего запроса произошла ошибка.',

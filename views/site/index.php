@@ -13,6 +13,11 @@ $this->title = Yii::t('app', 'Brain Calibrator');
 <div class="site-index">
     <div class="jumbotron">
         <h1><?=$question->text?></h1>
+        <?php if ($question->submitter): ?>
+        <div class="help-block">
+            <?=Yii::t('app', 'Submitter:')?> <?=Html::a($question->submitter->name, ['user/view', 'id' => $question->submitterId])?>
+        </div>
+        <?php endif ?>
         <div class="row" style="margin-top: 3em">     
             <?php $form = ActiveForm::begin([
                 'id' => 'answer-form',

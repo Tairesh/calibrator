@@ -6,7 +6,7 @@ use Yii;
 use yii\console\Controller;
 use yii\console\Exception;
 use app\models\User;
-use app\models\Question;
+use app\models\UserRole;
 
 /**
  * 
@@ -14,15 +14,15 @@ use app\models\Question;
 class StartController extends Controller
 {
     /**
-     * 
+     * Sets user role to admin
+     * @param integer $id User ID
      * @throws Exception
      */
-    public function actionIndex()
+    public function actionSetAdmin($id)
     {
-        if (!User::find()->where(['id' => 1])->count()) {
-            throw new Exception('User #1 not found');
+        if (!User::find()->where(['id' => $id])->exists()) {
+            throw new Exception("User #{$id} not found");
         }
-        User::updateAll(['role' => 2], ['id' => 1]);
-        Question::updateAll(['submitterId' => 1], ['submitterId' => NULL]);
+        User::updateAll(['role' => UserRole::ADMIN], ['id' => $id]);
     }
 }
